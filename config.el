@@ -119,7 +119,7 @@
     (org-agenda nil " "))
   (map! "<f1>" #'evertedsphere/switch-to-agenda)
 
-  (defun jethro/org-inbox-capture ()
+  (defun evertedsphere/org-inbox-capture ()
     (interactive)
     "Capture a task in agenda mode."
     (org-capture nil "i"))
@@ -193,7 +193,7 @@
         '(("r" "ref" plain (function org-roam--capture-get-point)
            "%?"
            :file-name "websites/${slug}"
-           :head "#+SETUPFILE:./hugo_setup.org
+           :head "#+SETUPFILE:./hugo-setup.org
 #+ROAM_KEY: ${ref}
 #+HUGO_SLUG: ${slug}
 #+TITLE: ${title}
@@ -227,12 +227,12 @@
     (add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor))
 
 (after! (org ox-hugo)
-  (defun jethro/conditional-hugo-enable ()
+  (defun evertedsphere/conditional-hugo-enable ()
     (save-excursion
       (if (cdr (assoc "SETUPFILE" (org-roam--extract-global-props '("SETUPFILE"))))
           (org-hugo-auto-export-mode +1)
         (org-hugo-auto-export-mode -1))))
-  (add-hook 'org-mode-hook #'jethro/conditional-hugo-enable))
+  (add-hook 'org-mode-hook #'evertedsphere/conditional-hugo-enable))
 
 (use-package! org-ref-ox-hugo
   :after org org-ref ox-hugo
