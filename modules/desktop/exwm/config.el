@@ -82,17 +82,19 @@
         ([?\M-f] . [C-right])
         ([?\C-p] . [up])
         ([?\C-n] . [down])
-        ([?\C-a] . [home])
+        ([?\C-a] . [?\C-a])
         ([?\C-e] . [end])
         ([?\M-v] . [prior])
         ([?\C-v] . [next])
         ([?\C-d] . [delete])
         ([?\C-k] . [S-end delete])
-        ;; copy/paste.
-        ([?\M-w] . [?\C-c])
-        ([?\C-y] . [?\C-v])
+        ;; cut/paste.
+        ([?\C-x ?\C-x] . [?\C-x])
+        ([?\C-\S-c] . [?\C-c])
+        ([?\C-\S-v] . [?\C-v])
         ;; search
         ([?\C-s] . [?\C-f])))
+
 
 (when (executable-find "brightnessctl")
   (defun evertedsphere/return-brightness-percentage ()
@@ -162,11 +164,11 @@
                  `(,@exwm-input-simulation-keys
                    ([?\C-w] . [?\C-w]))))))))
 
-(when (file-exists-p "/home/evertedsphere/.screenlayout/desktop.sh")
-  (require 'exwm-randr)
-  (setq exwm-randr-workspace-monitor-plist '(1 "USB-C-0" 2 "HDMI-0"))
-  (call-process "bash" nil 0 nil "-c" "/home/evertedsphere/.screenlayout/desktop.sh")
-  (exwm-randr-enable))
+;; (when (file-exists-p "/home/evertedsphere/.screenlayout/desktop.sh")
+;;   (require 'exwm-randr)
+;;   (setq exwm-randr-workspace-monitor-plist '(1 "USB-C-0" 2 "HDMI-0"))
+;;   (call-process "bash" nil 0 nil "-c" "/home/evertedsphere/.screenlayout/desktop.sh")
+;;   (exwm-randr-enable))
 
 (use-package! exwm-edit)
 

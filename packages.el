@@ -65,5 +65,9 @@
   :recipe (:host github :repo "jethrokuan/company-org-roam"))
 
 (package! grayscale-theme)
+(package! spacemacs-theme
+  :recipe (:host github :repo "nashamri/spacemacs-theme"))
+(package! weyland-yutani-theme
+  :recipe (:host github :repo "jstaursky/weyland-yutani-theme"))
 
 (unpin! doom-themes)
