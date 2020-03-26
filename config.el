@@ -1,14 +1,10 @@
 ;; (load-file "~/.doom.d/header.el")
 
-(setq search-highlight t
-      search-whitespace-regexp ".*?"
-      isearch-lax-whitespace t
-      isearch-regexp-lax-whitespace nil
-      isearch-lazy-highlight t
-      isearch-lazy-count t
+(setq search-highlight t search-whitespace-regexp ".*?"
+      isearch-lax-whitespace t isearch-regexp-lax-whitespace nil
+      isearch-lazy-highlight t isearch-lazy-count t
       lazy-count-prefix-format " (%s/%s) "
-      lazy-count-suffix-format nil
-      isearch-yank-on-move 'shift
+      lazy-count-suffix-format nil isearch-yank-on-move 'shift
       isearch-allow-scroll 'unlimited)
 
 (defun evertedsphere/capture-shell-output (cmd)
@@ -17,8 +13,9 @@
    0 -1))
 
 (after! doom-modeline
-  (doom-modeline-def-modeline 'evertedsphere/modeline '(bar battery matches buffer-info remote-host buffer-position)
-    '(lsp misc-info minor-modes major-mode process vcs checker " "))
+  (doom-modeline-def-modeline 'evertedsphere/modeline
+    '(bar battery matches buffer-info remote-host buffer-position)
+    '(lsp checker misc-info minor-modes major-mode process vcs " "))
   (defun setup-custom-doom-modeline ()
     (doom-modeline-set-modeline 'evertedsphere/modeline 'default))
   (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline))
@@ -29,13 +26,14 @@
 (setq inhibit-compacting-font-caches t)
 
 (setq user-full-name "Soham Chowdhury"
-      user-mail-address "chow.soham@gmail.com")
+      user-mail-address "evertedsphere@gmail.com")
 
-(setq doom-font (font-spec :family "PragmataPro Liga" :size 24)
+(setq doom-font (font-spec :family "PragmataPro Liga" :size 20)
       doom-big-font (font-spec :family "PragmataPro Liga" :size 30)
-      doom-variable-pitch-font (font-spec :family "PragmataPro Liga" :size 24))
+      doom-variable-pitch-font (font-spec :family "PragmataPro Liga" :size 20))
 
 (setq doom-theme 'doom-tomorrow-night)
+(setq doom-tomorrow-night-padded-modeline nil)
 
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 (setq treemacs-width 30)

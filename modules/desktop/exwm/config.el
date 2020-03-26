@@ -3,14 +3,18 @@
   :config
   (setq exwm-workspace-number 6))
 
-(defun evertedsphere/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer (format "%s - %s" exwm-class-name exwm-title)))
+(defun evertedsphere/exwm-rename-buffer-to-title ()
+  (exwm-workspace-rename-buffer (format "%s - %s" exwm-class-name exwm-title)))
+
 (add-hook 'exwm-update-title-hook 'evertedsphere/exwm-rename-buffer-to-title)
+
 (add-hook 'exwm-update-class-hook
           (defun my-exwm-update-class-hook ()
             (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
                         (string= "gimp" exwm-instance-name)
                         (string= "Firefox" exwm-class-name))
               (exwm-workspace-rename-buffer exwm-class-name))))
+
 (add-hook 'exwm-update-title-hook
           (defun my-exwm-update-title-hook ()
             (cond ((or (not exwm-instance-name)
@@ -56,17 +60,17 @@
 (exwm-input-set-key (kbd "s-<tab>") #'evertedsphere/switch-to-last-buffer)
 (exwm-input-set-key (kbd "<print>") #'evertedsphere/screen-to-clipboard)
 
-(mapcar (lambda (i)
+(mapc (lambda (i)
           (exwm-input-set-key (kbd (format "s-%d" i))
                               `(lambda ()
                                  (interactive)
                                  (exwm-workspace-switch-create ,i))))
-        (number-sequence 0 9))
+      (number-sequence 0 9))
 
 (add-hook 'exwm-manage-finish-hook
           (lambda ()
             (when (and exwm-class-name
-                       (string= exwm-class-name "URxvt"))
+                       (string= exwm-class-name "kitty"))
               (exwm-input-set-local-simulation-keys '(([?\C-c ?\C-c] . ?\C-c))))))
 
 (setq exwm-input-simulation-keys
