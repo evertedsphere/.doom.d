@@ -3,6 +3,8 @@
   :config
   (setq exwm-workspace-number 6))
 
+(server-start)
+
 (defun evertedsphere/exwm-rename-buffer-to-title ()
   (exwm-workspace-rename-buffer (format "%s - %s" exwm-class-name exwm-title)))
 
@@ -49,14 +51,35 @@
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(exwm-input-set-key (kbd "s-d") #'evertedsphere/launch)
+(when (executable-find "i3lock")
+  (defun evertedsphere/i3lock ()
+    (interactive)
+    (shell-command "i3lock -c '#2D3748'")
+    (kill-buffer "*Shell Command Output*"))
+  (exwm-input-set-key (kbd "s-<f2>") #'evertedsphere/i3lock))
+
+(when (executable-find "pactl")
+  (defun evertedsphere/pactl-dec-volume ()
+    (interactive)
+    (shell-command "pactl set-sink-volume @DEFAULT_SINK@ -5%")
+    (kill-buffer "*Shell Command Output*"))
+  (defun evertedsphere/pactl-inc-volume ()
+    (interactive)
+    (shell-command "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+    (kill-buffer "*Shell Command Output*"))
+  (exwm-input-set-key (kbd "S-<f11>") #'evertedsphere/pactl-inc-volume)
+  (exwm-input-set-key (kbd "S-<f12>") #'evertedsphere/pactl-dec-volume))
+
+
+(exwm-input-set-key (kbd "s-r") #'exwm-reset)
+(exwm-input-set-key (kbd "s-d") #'counsel-linux-app)
 (exwm-input-set-key (kbd "s-p") #'password-store-copy)
 (exwm-input-set-key (kbd "C-x t") #'vterm)
 (exwm-input-set-key (kbd "s-t a") #'evertedsphere/switch-to-agenda)
 ;; (exwm-input-set-key (kbd "s-t m") #'notmuch)
 (exwm-input-set-key (kbd "s-c") #'evertedsphere/org-inbox-capture)
 (exwm-input-set-key (kbd "s-f") #'counsel-find-file)
-(exwm-input-set-key (kbd "s-F") #'counsel-locate)
+(exwm-input-set-key (kbd "s-<f12>") #'counsel-locate)
 (exwm-input-set-key (kbd "s-<tab>") #'evertedsphere/switch-to-last-buffer)
 (exwm-input-set-key (kbd "<print>") #'evertedsphere/screen-to-clipboard)
 
@@ -76,12 +99,14 @@
 (setq exwm-input-simulation-keys
       '(
         ;; movement
-        ([?\C-b] . [left])
-        ([?\M-b] . [C-left])
-        ([?\C-f] . [right])
-        ([?\M-f] . [C-right])
-        ([?\C-p] . [up])
-        ([?\C-n] . [down])
+        ([?\s-h] . [left])
+        ([?\s-l] . [right])
+        ([?\s-k] . [up])
+        ([?\s-j] . [down])
+        ([?\C-\s-h] . [C-left])
+        ([?\C-\s-l] . [C-right])
+        ([?\C-\s-k] . [C-up])
+        ([?\C-\s-j] . [C-down])
         ([?\C-a] . [?\C-a])
         ([?\C-e] . [end])
         ([?\M-v] . [prior])

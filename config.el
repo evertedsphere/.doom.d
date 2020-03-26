@@ -2,6 +2,7 @@
 
 (setq user-full-name "Soham Chowdhury"
       user-mail-address "evertedsphere@gmail.com")
+(setenv "EDITOR" "emacsclient")
 
 ;; basic appearance settings
 

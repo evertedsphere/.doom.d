@@ -24,12 +24,11 @@
        :completion
        (company +childframe)
        ;; helm
-       (ivy +fuzzy +prescient)
+       (ivy +prescient)
 
        :ui
        deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
        fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides     ; highlighted indent columns
@@ -39,7 +38,7 @@
        ophints ; highlight the region an operation acts on
        (popup +all +defaults)   ; tame sudden yet inevitable temporary windows
        ;;pretty-code       ; replace bits of code with pretty symbols
-       ;;tabs              ; an tab bar for Emacs
+       ;; tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        unicode           ; extended unicode support for various languages
        ;; vc-gutter         ; vcs diff in the fringe
@@ -70,8 +69,8 @@
        :term
        eshell            ; a consistent, cross-platform shell (WIP)
        ;;shell             ; a terminal REPL for Emacs
-       term              ; terminals in Emacs
-       ;;vterm             ; another terminals in Emacs
+       ;; term              ; terminals in Emacs
+       vterm             ; another terminals in Emacs
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
