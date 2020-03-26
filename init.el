@@ -18,10 +18,13 @@
        ;;chinese
        ;;japanese
 
+       :desktop
+       exwm
+
        :completion
        (company +childframe)
-       helm
-       ;; (ivy +fuzzy +prescient +childframe)
+       ;; helm
+       (ivy +fuzzy +prescient)
 
        :ui
        deft              ; notational velocity for Emacs
@@ -69,7 +72,7 @@
        :term
        eshell            ; a consistent, cross-platform shell (WIP)
        ;;shell             ; a terminal REPL for Emacs
-       ;;term              ; terminals in Emacs
+       term              ; terminals in Emacs
        ;;vterm             ; another terminals in Emacs
 
        :checkers
@@ -124,7 +127,6 @@
         +publish
         +capture
         +dragndrop
-        +org
         +pandoc
         +pomodoro
         +present)

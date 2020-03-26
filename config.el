@@ -1,13 +1,23 @@
-(load-file "~/.doom.d/header.el")
+;; (load-file "~/.doom.d/header.el")
+
+(setq search-highlight t
+      search-whitespace-regexp ".*?"
+      isearch-lax-whitespace t
+      isearch-regexp-lax-whitespace nil
+      isearch-lazy-highlight t
+      isearch-lazy-count t
+      lazy-count-prefix-format " (%s/%s) "
+      lazy-count-suffix-format nil
+      isearch-yank-on-move 'shift
+      isearch-allow-scroll 'unlimited)
 
 (defun evertedsphere/capture-shell-output (cmd)
   (substring
-    (shell-command-to-string cmd)
+   (shell-command-to-string cmd)
    0 -1))
 
 (after! doom-modeline
-  (doom-modeline-def-modeline 'evertedsphere/modeline
-    '(bar battery matches buffer-info remote-host buffer-position)
+  (doom-modeline-def-modeline 'evertedsphere/modeline '(bar battery matches buffer-info remote-host buffer-position)
     '(lsp misc-info minor-modes major-mode process vcs checker " "))
   (defun setup-custom-doom-modeline ()
     (doom-modeline-set-modeline 'evertedsphere/modeline 'default))
@@ -33,16 +43,104 @@
 (setq deft-directory "~/org"
       deft-recursive t)
 
-(setq org-directory "~/org/")
-
 (after! org
-  (add-to-list 'org-modules 'org-habit t))
+  (add-to-list 'org-modules 'org-habit t)
+  ;; (add-hook 'org-mode-hook #'writeroom-mode)
+  ;; (add-to-list 'org-modules 'org-protocol t)
+
+  (setq org-bullets-bullet-list '("·" ":" "𐬼"))
+  (setq org-directory "~/org/")
+
+  (require 'find-lisp)
+  (setq evertedsphere/org-agenda-directory "~/org/agenda/")
+  (setq org-agenda-files
+        (find-lisp-find-files evertedsphere/org-agenda-directory "\.org$"))
+
+  (setq org-capture-templates
+        `(("i" "inbox" entry (file ,(concat evertedsphere/org-agenda-directory "inbox.org"))
+           "* TODO %?")
+          ("e" "email" entry (file+headline ,(concat evertedsphere/org-agenda-directory "emails.org") "Emails")
+           "* TODO [#A] Reply: %a :@home:@school:"
+           :immediate-finish t)
+          ("c" "org-protocol-capture" entry (file ,(concat evertedsphere/org-agenda-directory "inbox.org"))
+           "* TODO [[%:link][%:description]]\n\n %i"
+           :immediate-finish t)
+          ("w" "review" entry (file+olp+datetree ,(concat evertedsphere/org-agenda-directory "reviews.org"))
+           (file ,(concat evertedsphere/org-agenda-directory "templates/weekly_review.org")))))
+
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+
+  (setq org-log-done 'time
+        org-log-into-drawer t
+        org-log-state-notes-insert-after-drawers nil)
+
+  (setq org-tag-alist (quote (("@errand" . ?e)
+                              ("@office" . ?o)
+                              ("@home" . ?h)
+                              ("@school" . ?s)
+                              (:newline)
+                              ("WAITING" . ?w)
+                              ("HOLD" . ?H)
+                              ("CANCELLED" . ?c))))
+
+  (setq org-fast-tag-selection-single-key nil)
+  (setq org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  (setq org-refile-targets '(("next.org" :level . 0)
+                             ("someday.org" :level . 0)
+                             ("reading.org" :level . 1)
+                             ("projects.org" :maxlevel . 1)))
+  (map! "<f1>" #'evertedsphere/switch-to-agenda)
+  (setq org-agenda-block-separator nil
+        org-agenda-start-with-log-mode t)
+  (defun evertedsphere/switch-to-agenda ()
+    (interactive)
+    (org-agenda nil " "))
+
+  (defun jethro/org-inbox-capture ()
+    (interactive)
+    "Capture a task in agenda mode."
+    (org-capture nil "i"))
+
+  (map! :map org-agenda-mode-map
+        "i" #'org-agenda-clock-in
+        "R" #'org-agenda-refile
+        "c" #'evertedsphere/org-inbox-capture)
+
+  (setq org-columns-default-format "%40ITEM(Task) %Effort(EE){:} %CLOCKSUM(Time Spent) %SCHEDULED(Scheduled) %DEADLINE(Deadline)")
+  (setq org-agenda-custom-commands
+        `((" " "Agenda"
+           ((agenda ""
+                    ((org-agenda-span 'week)
+                     (org-deadline-warning-days 365)))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "To refile")
+                   (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "inbox.org")))))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Emails")
+                   (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "emails.org")))))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "In progress")
+                   (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "someday.org")
+                                       ,(concat evertedsphere/org-agenda-directory "projects.org")
+                                       ,(concat evertedsphere/org-agenda-directory "next.org")))
+                   ))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Projects")
+                   (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "projects.org")))
+                   ))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "One-off tasks")
+                   (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "next.org")))
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled)))))))))
+
 
 (map! :map org-mode-map
       :localleader
       "x" #'org-latex-preview)
-
-(setq org-bullets-bullet-list '("·" ":" "𐬼"))
 
 (add-hook! 'org-capture-mode-hook (company-mode -1))
 
@@ -50,26 +148,26 @@
   :commands (org-roam-insert org-roam-find-file org-roam)
   :init
   (setq org-roam-directory "~/code/website/org")
-  (map! :leader
-        :prefix "n"
+  (map! :leader :prefix "n"
         :desc "org-roam insert" "i" #'org-roam-insert
         :desc "org-roam find"   "/" #'org-roam-find-file
         :desc "org-roam buffer" "r" #'org-roam)
+
   (defun evertedsphere/org-roam--backlinks-list (file)
     (if (org-roam--org-roam-file-p file)
         (--reduce-from
-        (concat acc (format "- [[file:%s][%s]]\n"
-                            (file-relative-name (car it) org-roam-directory)
-                                    (org-roam--get-title-or-slug (car it))))
-        "" (org-roam-sql [:select [file-from] :from file-links :where (= file-to $s1)] file))
-        ""))
+         (concat acc (format "- [[file:%s][%s]]\n"
+                             (file-relative-name (car it) org-roam-directory)
+                             (org-roam--get-title-or-slug (car it))))
+         "" (org-roam-sql [:select [file-from] :from file-links :where (= file-to $s1)] file))
+      ""))
 
   (defun evertedsphere/org-export-preprocessor (backend)
     (let ((links (evertedsphere/org-roam--backlinks-list (buffer-file-name))))
-        (unless (string= links "")
+      (unless (string= links "")
         (save-excursion
-            (goto-char (point-max))
-            (insert (concat "\n* Backlinks\n") links)))))
+          (goto-char (point-max))
+          (insert (concat "\n* Backlinks\n") links)))))
 
   :config
   (org-roam-mode +1)
@@ -90,6 +188,10 @@
                  ("unpublished" . "${author}, *${title}* (${year}). Unpublished manuscript.")
                  ("misc" . "${author} (${year}). *${title}*. Retrieved from [${howpublished}](${howpublished}). ${note}.")
                  (nil . "${author}, *${title}* (${year})."))))
+
+;; TODO fix
+;; (use-package! srefactor
+;;   :commands (srefactor-lisp-format-buffer))
 
 (setq display-line-numbers-type nil)
 

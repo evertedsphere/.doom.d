@@ -58,5 +58,12 @@
   :recipe (:host github :repo "jethrokuan/org-roam"))
 (package! org-ql
   :recipe (:host github :repo "alphapapa/org-ql"))
+(package! org-clock-convenience)
+(package! org-journal)
+(package! org-gcal)
+(package! company-org-roam
+  :recipe (:host github :repo "jethrokuan/company-org-roam"))
+
+(package! grayscale-theme)
 
 (unpin! doom-themes)
