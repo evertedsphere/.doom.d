@@ -82,8 +82,7 @@
           ("e" "email" entry
            (file+headline
             ,(concat evertedsphere/org-agenda-directory "emails.org") "Emails")
-           "* TODO [#A] Reply: %a :@home:@school:"
-           :immediate-finish t)
+           "* TODO [#A] %a :email:\n%?")
           ("c" "org-protocol-capture" entry
            (file ,(concat evertedsphere/org-agenda-directory "inbox.org"))
            "* TODO [[%:link][%:description]]\n\n %i"
@@ -156,6 +155,13 @@
                   ((org-agenda-overriding-header "One-off tasks")
                    (org-agenda-files '(,(concat evertedsphere/org-agenda-directory "next.org")))
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled)))))))))
+
+(use-package! ol-notmuch
+  :init
+  (defun evertedsphere/org-capture-email ()
+    (interactive)
+    (org-capture nil "e"))
+  (map! :map notmuch-show-mode-map :localleader :desc "capture to org" "o" #'evertedsphere/org-capture-email))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam-switch-to-buffer org-roam)
