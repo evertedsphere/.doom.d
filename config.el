@@ -290,3 +290,5 @@
   (setq rustic-lsp-server 'rust-analyzer))
 
 (setq web-mode-enable-engine-detection t)
+
+(use-package! ssh-agency)
