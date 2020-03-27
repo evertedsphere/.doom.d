@@ -67,8 +67,8 @@
     (interactive)
     (shell-command "pactl set-sink-volume @DEFAULT_SINK@ +5%")
     (kill-buffer "*Shell Command Output*"))
-  (exwm-input-set-key (kbd "S-<f11>") #'evertedsphere/pactl-inc-volume)
-  (exwm-input-set-key (kbd "S-<f12>") #'evertedsphere/pactl-dec-volume))
+  (exwm-input-set-key (kbd "S-<f11>") #'evertedsphere/pactl-dec-volume)
+  (exwm-input-set-key (kbd "S-<f12>") #'evertedsphere/pactl-inc-volume))
 
 
 (exwm-input-set-key (kbd "s-r") #'exwm-reset)
@@ -99,26 +99,27 @@
 (setq exwm-input-simulation-keys
       '(
         ;; movement
-        ([?\s-h] . [left])
-        ([?\s-l] . [right])
-        ([?\s-k] . [up])
-        ([?\s-j] . [down])
-        ([?\C-\s-h] . [C-left])
-        ([?\C-\s-l] . [C-right])
-        ([?\C-\s-k] . [C-up])
-        ([?\C-\s-j] . [C-down])
+        ;; ([?\s-h] . [left])
+        ;; ([?\s-l] . [right])
+        ;; ([?\s-k] . [up])
+        ;; ([?\s-j] . [down])
+        ([?\C-\s-h] . [left])
+        ([?\C-\s-l] . [right])
+        ([?\C-\s-k] . [up])
+        ([?\C-\s-j] . [down])
         ([?\C-a] . [?\C-a])
-        ([?\C-e] . [end])
-        ([?\M-v] . [prior])
-        ([?\C-v] . [next])
-        ([?\C-d] . [delete])
+        ;; ([?\C-e] . [end])
+        ;; ([?\M-v] . [prior])
+        ;; ([?\C-v] . [next])
+        ;; ([?\C-d] . [delete])
         ([?\C-k] . [S-end delete])
         ;; cut/paste.
         ([?\C-x ?\C-x] . [?\C-x])
         ([?\C-\S-c] . [?\C-c])
         ([?\C-\S-v] . [?\C-v])
         ;; search
-        ([?\C-s] . [?\C-f])))
+        ([?\C-s] . [?\C-s])
+        ([?\C-\s-s] . [?\C-f])))
 
 
 (when (executable-find "brightnessctl")
@@ -169,10 +170,10 @@
 
 (exwm-input-set-key (kbd "s-b") #'evertedsphere/exwm-ibuffer)
 
-(exwm-input-set-key (kbd "<s-up>") 'windmove-up)
-(exwm-input-set-key (kbd "<s-down>") 'windmove-down)
-(exwm-input-set-key (kbd "<s-right>") 'windmove-right)
-(exwm-input-set-key (kbd "<s-left>") 'windmove-left)
+(exwm-input-set-key (kbd "s-k") 'windmove-up)
+(exwm-input-set-key (kbd "s-j") 'windmove-down)
+(exwm-input-set-key (kbd "s-h") 'windmove-right)
+(exwm-input-set-key (kbd "s-l") 'windmove-left)
 
 (define-key exwm-mode-map (kbd "C-x 4 0")
   (lambda ()

@@ -70,4 +70,6 @@
 (package! weyland-yutani-theme
   :recipe (:host github :repo "jstaursky/weyland-yutani-theme"))
 
+(package! mini-modeline)
+
 (unpin! doom-themes)
