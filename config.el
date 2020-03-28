@@ -32,7 +32,8 @@
 (setq evsph/monospace-font "PragmataPro Liga")
 (setq doom-font (font-spec :family evsph/monospace-font :size 20)
       doom-big-font (font-spec :family evsph/monospace-font :size 26)
-      doom-variable-pitch-font (font-spec :family evsph/monospace-font))
+      doom-variable-pitch-font (font-spec :family evsph/monospace-font)
+      doom-unicode-font (font-spec :family evsph/monospace-font))
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 (setq treemacs-width 30)
 
@@ -42,12 +43,16 @@
 
 (after! doom-modeline
   (setq doom-modeline-icon nil)
+
+  ;; "LSP"
   (doom-modeline-def-modeline
     'evsph/modeline
-    '(matches buffer-position
-              buffer-info remote-host
-              minor-modes major-mode
-              process vcs lsp checker))
+    '("  λΣΠ  "
+      bar " " matches buffer-position
+      buffer-info remote-host
+      minor-modes major-mode
+      process vcs lsp checker))
+
   (defun evsph/setup-custom-modeline ()
     (doom-modeline-set-modeline 'evsph/modeline 'default))
   (add-hook 'doom-modeline-mode-hook 'evsph/setup-custom-modeline))
