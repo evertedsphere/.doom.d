@@ -198,7 +198,8 @@ These goes before those shown in their full names."
       (maxibuffer-enable)
     (maxibuffer-disable)))
 
-(defvar maxibuffer-info-padding-right 1)
+;; HACK lul
+(defvar maxibuffer-info-padding-right -1)
 
 (defvar maxibuffer-mode-line-colors nil)
 

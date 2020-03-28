@@ -35,7 +35,7 @@
        treemacs
        unicode
        ;; vc-gutter
-       (window-select +switch-window)
+       window-select
        workspaces
        zen
 

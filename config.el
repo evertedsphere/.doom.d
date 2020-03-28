@@ -1,8 +1,6 @@
 ;; global modes
 (global-company-mode +1)
 (global-subword-mode +1)
-(display-battery-mode +1)
-(display-time-mode +1)
 
 ;; whoami
 (setq user-full-name "Soham Chowdhury"
@@ -24,13 +22,12 @@
 
 ;; basic appearance settings
 (setq doom-themes-padded-modeline nil)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-moonlight)
 (use-package! theme-looper
   :init
   (map!
    :desc "theme-looper prev" "<f8>" #'theme-looper-enable-previous-theme
    :desc "theme-looper next" "<f9>" #'theme-looper-enable-next-theme))
-(defvaralias 'mini-modeline-frame 'exwm-workspace--current)
 
 (setq evsph/monospace-font "PragmataPro Liga")
 (setq doom-font (font-spec :family evsph/monospace-font :size 20)
@@ -44,6 +41,7 @@
       '("time" "date" "battery"))
 
 (after! doom-modeline
+  (setq doom-modeline-icon nil)
   (doom-modeline-def-modeline
     'evsph/modeline
     '(bar matches buffer-position
