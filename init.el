@@ -22,11 +22,12 @@
        :ui
        deft
        doom
+       modeline
+       maxibuffer
        fill-column
        hl-todo
        indent-guides
        hydra
-       modeline
        nav-flash
        ophints
        (popup +all +defaults)

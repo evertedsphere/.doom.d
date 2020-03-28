@@ -4,8 +4,6 @@
 (package! libmpdel)
 (package! ivy-mpdel)
 
-(package! srefactor)
-
 (package! org-roam
   :recipe (:host github :repo "jethrokuan/org-roam"))
 (package! org-ql
@@ -18,9 +16,9 @@
 
 (package! spacemacs-theme
   :recipe (:host github :repo "nashamri/spacemacs-theme"))
+(package! theme-looper)
 
-(package! smart-mode-line-atom-one-dark-theme)
-(package! smart-mode-line)
+(package! doom-modeline)
 (package! mini-modeline)
 
 (unpin! doom-themes)

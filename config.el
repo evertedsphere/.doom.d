@@ -1,52 +1,72 @@
-;; perf tweaks
-(setq inhibit-compacting-font-caches t)
-(setq display-line-numbers-type nil)
-(setq lsp-enable-file-watchers nil
-      lsp-enable-indentation nil
-      lsp-enable-semantic-highlighting nil
-      lsp-enable-symbol-highlighting nil
-      lsp-ui-doc-enable nil
-      lsp-ui-sideline-show-hover nil)
+;; global modes
+(global-company-mode +1)
+(global-subword-mode +1)
+(display-battery-mode +1)
+(display-time-mode +1)
 
 ;; whoami
 (setq user-full-name "Soham Chowdhury"
       user-mail-address "evertedsphere@gmail.com")
 
-;; FIXME this should not be required
+;; perf tweaks
+(setq inhibit-compacting-font-caches t)
+(setq display-line-numbers-type nil)
+(after! lsp
+  (setq lsp-enable-file-watchers nil
+        lsp-enable-indentation nil
+        lsp-enable-semantic-highlighting nil
+        lsp-enable-symbol-highlighting nil
+        lsp-ui-doc-enable nil
+        lsp-ui-sideline-show-hover nil))
+
+;; HACK this should not be required
 (setenv "EDITOR" "emacsclient")
 
 ;; basic appearance settings
-(setq evsph/monospace-font "PragmataPro Liga")
-
 (setq doom-themes-padded-modeline nil)
-(setq doom-theme 'doom-one)
-(setq doom-font (font-spec :family evsph/monospace-font :size 18)
+(setq doom-theme 'doom-tomorrow-night)
+(use-package! theme-looper
+  :init
+  (map!
+   :desc "theme-looper prev" "<f8>" #'theme-looper-enable-previous-theme
+   :desc "theme-looper next" "<f9>" #'theme-looper-enable-next-theme))
+(defvaralias 'mini-modeline-frame 'exwm-workspace--current)
+
+(setq evsph/monospace-font "PragmataPro Liga")
+(setq doom-font (font-spec :family evsph/monospace-font :size 20)
       doom-big-font (font-spec :family evsph/monospace-font :size 26)
       doom-variable-pitch-font (font-spec :family evsph/monospace-font))
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 (setq treemacs-width 30)
 
+(maxibuffer-mode +1)
+(setq maxibuffer-active-modules
+      '("time" "date" "battery"))
+
 (after! doom-modeline
   (doom-modeline-def-modeline
     'evsph/modeline
-    '(bar matches buffer-position buffer-info remote-host minor-modes major-mode process vcs lsp checker)
-    ;; HACK Move flycheck away from the extreme right end to prevent clipping.
-    '(misc-info battery " "))
+    '(bar matches buffer-position
+          buffer-info remote-host
+          minor-modes major-mode
+          process vcs lsp checker))
   (defun evsph/setup-custom-modeline ()
     (doom-modeline-set-modeline 'evsph/modeline 'default))
   (add-hook 'doom-modeline-mode-hook 'evsph/setup-custom-modeline))
 
-(global-company-mode +1)
-
 ;; fundamental keybinds
 (setq doom-localleader-key ",")
 
-;; jethrokuan's isearch optimisations
-(setq search-highlight t search-whitespace-regexp ".*?"
-      isearch-lax-whitespace t isearch-regexp-lax-whitespace nil
-      isearch-lazy-highlight t isearch-lazy-count t
+;; jethrokuan's isearch improvements
+(setq search-highlight t
+      search-whitespace-regexp ".*?"
+      isearch-lax-whitespace t
+      isearch-regexp-lax-whitespace nil
+      isearch-lazy-highlight t
+      isearch-lazy-count t
       lazy-count-prefix-format " (%s/%s) "
-      lazy-count-suffix-format nil isearch-yank-on-move 'shift
+      lazy-count-suffix-format nil
+      isearch-yank-on-move 'shift
       isearch-allow-scroll 'unlimited)
 
 ;; org, deft, org-roam, etc.
@@ -255,10 +275,6 @@
                  ("unpublished" . "${author}, *${title}* (${year}). Unpublished manuscript.")
                  ("misc" . "${author} (${year}). *${title}*. Retrieved from [${howpublished}](${howpublished}). ${note}.")
                  (nil . "${author}, *${title}* (${year})."))))
-
-(use-package! srefactor)
-(use-package! srefactor-lisp
-  :commands (srefactor-lisp-format-buffer))
 
 (after! ivy
   (define-key ivy-minibuffer-map (kbd "C-h") 'ivy-backward-delete-char))

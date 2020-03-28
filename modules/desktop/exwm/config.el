@@ -197,3 +197,5 @@
 ;;   (exwm-randr-enable))
 
 (use-package! exwm-edit)
+
+(exwm-enable)
