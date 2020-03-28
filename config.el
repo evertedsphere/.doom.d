@@ -21,8 +21,8 @@
 (setenv "EDITOR" "emacsclient")
 
 ;; basic appearance settings
-(setq doom-themes-padded-modeline nil)
 (setq doom-theme 'doom-moonlight)
+(setq doom-moonlight-padded-modeline 5)
 (use-package! theme-looper
   :init
   (map!
@@ -44,10 +44,10 @@
   (setq doom-modeline-icon nil)
   (doom-modeline-def-modeline
     'evsph/modeline
-    '(bar matches buffer-position
-          buffer-info remote-host
-          minor-modes major-mode
-          process vcs lsp checker))
+    '(matches buffer-position
+              buffer-info remote-host
+              minor-modes major-mode
+              process vcs lsp checker))
   (defun evsph/setup-custom-modeline ()
     (doom-modeline-set-modeline 'evsph/modeline 'default))
   (add-hook 'doom-modeline-mode-hook 'evsph/setup-custom-modeline))
