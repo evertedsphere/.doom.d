@@ -45,7 +45,7 @@
 (use-package! doom-modeline
   :config
   (setq doom-modeline-icon t)
-  ;; "LSP"
+  ;; TODO fix searching and shit. anzu?
   (doom-modeline-def-modeline
     'evsph/modeline
     '(matches
