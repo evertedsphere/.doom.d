@@ -19,6 +19,6 @@
 (package! theme-looper)
 
 (package! doom-modeline)
-(package! mini-modeline)
+;; (package! mini-modeline)
 
 (unpin! doom-themes)

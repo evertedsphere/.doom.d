@@ -22,7 +22,7 @@
 
 ;; basic appearance settings
 (setq doom-theme 'doom-moonlight)
-(setq doom-moonlight-padded-modeline 5)
+(setq doom-moonlight-padded-modeline nil)
 (use-package! theme-looper
   :init
   (map!
@@ -34,6 +34,7 @@
       doom-big-font (font-spec :family evsph/monospace-font :size 26)
       doom-variable-pitch-font (font-spec :family evsph/monospace-font)
       doom-unicode-font (font-spec :family evsph/monospace-font))
+
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 (setq treemacs-width 30)
 
@@ -41,21 +42,21 @@
 (setq maxibuffer-active-modules
       '("time" "date" "battery"))
 
-(after! doom-modeline
-  (setq doom-modeline-icon nil)
-
+(use-package! doom-modeline
+  :config
+  (setq doom-modeline-icon t)
   ;; "LSP"
   (doom-modeline-def-modeline
     'evsph/modeline
-    '("  λΣΠ  "
-      bar " " matches buffer-position
-      buffer-info remote-host
+    '(matches
+      buffer-info buffer-position remote-host
       minor-modes major-mode
       process vcs lsp checker))
-
-  (defun evsph/setup-custom-modeline ()
-    (doom-modeline-set-modeline 'evsph/modeline 'default))
-  (add-hook 'doom-modeline-mode-hook 'evsph/setup-custom-modeline))
+  (setq-default header-line-format
+                (list "%e"
+                      (propertize " ΠΣ " 'face 'doom-modeline-urgent)
+                      '(:eval (doom-modeline-format--evsph/modeline))))
+  (setq-default mode-line-format nil))
 
 ;; fundamental keybinds
 (setq doom-localleader-key ",")
