@@ -44,17 +44,19 @@
 
 (use-package! doom-modeline
   :config
-  (setq doom-modeline-icon t)
+  (setq doom-modeline-icon nil)
+
   ;; TODO fix searching and shit. anzu?
   (doom-modeline-def-modeline
     'evsph/modeline
-    '(matches
+    `(
+      ,(propertize "❈" 'face 'doom-modeline-urgent)
       buffer-info buffer-position remote-host
       minor-modes major-mode
       process vcs lsp checker))
+
   (setq-default header-line-format
                 (list "%e"
-                      (propertize " ΠΣ " 'face 'doom-modeline-urgent)
                       '(:eval (doom-modeline-format--evsph/modeline))))
   (setq-default mode-line-format nil))
 
