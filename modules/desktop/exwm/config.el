@@ -172,8 +172,8 @@
 
 (exwm-input-set-key (kbd "s-k") 'windmove-up)
 (exwm-input-set-key (kbd "s-j") 'windmove-down)
-(exwm-input-set-key (kbd "s-h") 'windmove-right)
-(exwm-input-set-key (kbd "s-l") 'windmove-left)
+(exwm-input-set-key (kbd "s-h") 'windmove-left)
+(exwm-input-set-key (kbd "s-l") 'windmove-right)
 
 (define-key exwm-mode-map (kbd "C-x 4 0")
   (lambda ()
@@ -197,5 +197,3 @@
 ;;   (exwm-randr-enable))
 
 (use-package! exwm-edit)
-
-(exwm-enable)
