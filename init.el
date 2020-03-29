@@ -22,7 +22,7 @@
        :ui
        deft
        doom
-       ;; modeline
+       modeline
        maxibuffer
        fill-column
        hl-todo

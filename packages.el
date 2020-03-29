@@ -18,7 +18,7 @@
   :recipe (:host github :repo "nashamri/spacemacs-theme"))
 (package! theme-looper)
 
-(package! doom-modeline)
+;; (package! doom-modeline)
 ;; (package! mini-modeline)
 
 (unpin! doom-themes)

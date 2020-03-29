@@ -22,7 +22,7 @@
 
 ;; basic appearance settings
 (setq doom-theme 'doom-moonlight)
-(setq doom-moonlight-padded-modeline nil)
+(setq doom-moonlight-padded-modeline 5)
 (use-package! theme-looper
   :init
   (map!
@@ -42,23 +42,57 @@
 (setq maxibuffer-active-modules
       '("time" "date" "battery"))
 
+(use-package! libmpdel)
+
 (use-package! doom-modeline
   :config
-  (setq doom-modeline-icon nil)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-unicode-fallback nil)
+
+  (require 'libmpdel)
+
+  (doom-modeline-def-segment evsph/mpd
+    "mpd now playing info"
+    (if (doom-modeline--active)
+        (if libmpdel--current-song
+            (concat
+             (propertize "playing " 'face 'italic)
+             (propertize (libmpdel--song-name libmpdel--current-song)
+                         'face 'doom-modeline-evil-emacs-state)
+             (propertize " from " 'face 'italic)
+             (propertize (libmpdel--album-name (libmpdel-album libmpdel--current-song))
+                         'face 'bold)
+             (propertize " by " 'face 'italic)
+             (propertize (libmpdel--artist-name (libmpdel-artist libmpdel--current-song))
+                         'face 'bold))
+          "not playing")
+      " "))
+
+  (doom-modeline-def-segment evsph/date
+    (format-time-string "%a %d %b %Y"))
+
+  (doom-modeline-def-segment evsph/time
+    (format-time-string "%H:%M:%S"))
 
   ;; TODO fix searching and shit. anzu?
   (doom-modeline-def-modeline
-    'evsph/modeline
-    `(
-      ,(propertize "❈" 'face 'doom-modeline-urgent)
-      buffer-info buffer-position remote-host
-      minor-modes major-mode
-      process vcs lsp checker))
+    'evsph/header-line
+    `(" " evsph/time " " evsph/date " " evsph/mpd))
+
+  (doom-modeline-def-modeline 'evsph/mode-line
+    `(bar workspace-name window-number modals matches buffer-info
+          remote-host buffer-position word-count parrot selection-info
+          objed-state persp-name grip irc mu4e gnus
+          github debug lsp minor-modes input-method indent-info
+          buffer-encoding major-mode process vcs checker))
+
+  (defun evsph/setup-mode-line ()
+    (doom-modeline-set-modeline 'evsph/mode-line 'default))
+  (add-hook 'doom-modeline-mode-hook 'evsph/setup-mode-line)
 
   (setq-default header-line-format
                 (list "%e"
-                      '(:eval (doom-modeline-format--evsph/modeline))))
-  (setq-default mode-line-format nil))
+                      '(:eval (doom-modeline-format--evsph/header-line)))))
 
 ;; fundamental keybinds
 (setq doom-localleader-key ",")
