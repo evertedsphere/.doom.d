@@ -49,8 +49,6 @@
   (setq doom-modeline-icon t)
   (setq doom-modeline-unicode-fallback nil)
 
-  (require 'libmpdel)
-
   (doom-modeline-def-segment evsph/mpd
     "mpd now playing info"
     (if (doom-modeline--active)
@@ -77,7 +75,7 @@
   ;; TODO fix searching and shit. anzu?
   (doom-modeline-def-modeline
     'evsph/header-line
-    `(" " evsph/time " " evsph/date " " evsph/mpd))
+    `(" " evsph/mpd))
 
   (doom-modeline-def-modeline 'evsph/mode-line
     `(bar workspace-name window-number modals matches buffer-info

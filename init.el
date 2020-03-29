@@ -33,7 +33,6 @@
        (popup +all +defaults)
        pretty-code
        treemacs
-       unicode
        ;; vc-gutter
        window-select
        workspaces
