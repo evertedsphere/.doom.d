@@ -21,8 +21,8 @@
 (setenv "EDITOR" "emacsclient")
 
 ;; basic appearance settings
+(setq doom-themes-padded-modeline 4)
 (setq doom-theme 'doom-moonlight)
-(setq doom-moonlight-padded-modeline 5)
 (use-package! theme-looper
   :init
   (map!
@@ -31,37 +31,29 @@
 
 (setq evsph/monospace-font "PragmataPro Liga")
 (setq doom-font (font-spec :family evsph/monospace-font :size 20)
-      doom-big-font (font-spec :family evsph/monospace-font :size 26)
-      doom-variable-pitch-font (font-spec :family evsph/monospace-font)
-      doom-unicode-font (font-spec :family evsph/monospace-font))
+      doom-big-font (font-spec :size 28)
+      doom-variable-pitch-font (font-spec :family evsph/monospace-font))
 
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 (setq treemacs-width 30)
-
-(maxibuffer-mode +1)
-(setq maxibuffer-active-modules
-      '("time" "date" "battery"))
 
 (use-package! libmpdel)
 
 (use-package! doom-modeline
   :config
   (setq doom-modeline-icon t)
-  (setq doom-modeline-unicode-fallback nil)
+  (setq doom-modeline-modal-icon nil)
 
   (doom-modeline-def-segment evsph/mpd
     "mpd now playing info"
     (if (doom-modeline--active)
         (if libmpdel--current-song
             (concat
-             (propertize "playing " 'face 'italic)
              (propertize (libmpdel--song-name libmpdel--current-song)
-                         'face 'doom-modeline-evil-emacs-state)
-             (propertize " from " 'face 'italic)
-             (propertize (libmpdel--album-name (libmpdel-album libmpdel--current-song))
                          'face 'bold)
              (propertize " by " 'face 'italic)
-             (propertize (libmpdel--artist-name (libmpdel-artist libmpdel--current-song))
+             (propertize (libmpdel--artist-name
+                          (libmpdel-artist libmpdel--current-song))
                          'face 'bold))
           "not playing")
       " "))
@@ -72,17 +64,24 @@
   (doom-modeline-def-segment evsph/time
     (format-time-string "%H:%M:%S"))
 
+  (setq evsph/line-separator (propertize " ⁕ " 'face 'doom-modeline-project-dir))
+
   ;; TODO fix searching and shit. anzu?
   (doom-modeline-def-modeline
     'evsph/header-line
-    `(" " evsph/mpd))
+    `(" "
+      evsph/time
+      " "
+      evsph/date
+      ,evsph/line-separator
+      evsph/mpd))
 
   (doom-modeline-def-modeline 'evsph/mode-line
-    `(bar workspace-name window-number modals matches buffer-info
-          remote-host buffer-position word-count parrot selection-info
-          objed-state persp-name grip irc mu4e gnus
-          github debug lsp minor-modes input-method indent-info
-          buffer-encoding major-mode process vcs checker))
+    `(workspace-name window-number matches modals
+                     buffer-info remote-host buffer-position word-count selection-info buffer-encoding
+                     ,evsph/line-separator
+                     persp-name grip irc mu4e gnus github debug lsp minor-modes input-method indent-info
+                     major-mode process vcs checker))
 
   (defun evsph/setup-mode-line ()
     (doom-modeline-set-modeline 'evsph/mode-line 'default))
@@ -113,18 +112,17 @@
 
 (after! org
   (add-to-list 'org-modules 'org-habit t)
+  (add-to-list 'org-modules 'org-protocol t)
   (setq org-hugo-default-section-directory "posts")
   ;; (add-hook 'org-mode-hook #'writeroom-mode)
-  ;; (add-to-list 'org-modules 'org-protocol t)
 
-  (setq org-bullets-bullet-list '("·" ":" "𐬼"))
+  (setq org-bullets-bullet-list '("·" ":" "@"))
   (setq org-directory "~/org/")
 
   (require 'find-lisp)
   (setq evsph/org-agenda-directory (concat org-directory "agenda/"))
   (setq org-agenda-files
         (find-lisp-find-files evsph/org-agenda-directory "\.org$"))
-
   (setq org-capture-templates
         `(("i" "inbox" entry
            (file ,(concat evsph/org-agenda-directory "inbox.org"))
@@ -233,8 +231,8 @@
         :desc "org-roam-find-file" "f" #'org-roam-find-file
         :desc "org-roam-show-graph" "g" #'org-roam-show-graph
         :desc "org-roam-insert" "i" #'org-roam-insert)
-  (setq org-roam-directory "~/org/zettels"
-        org-roam-db-location "~/org/.org-roam.db")
+  (setq org-roam-directory (concat org-directory "zettels/")
+        org-roam-db-location (concat org-directory ".org-roam.db"))
   :config
   (require 'org-roam-protocol)
   (setq org-roam-capture-templates

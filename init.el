@@ -8,22 +8,21 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :input
-       ;;chinese
-       ;;japanese
+       ;; chinese
+       ;; japanese
 
        :desktop
        exwm
 
        :completion
        ;; Using a child frame gives us those cute icons beside the candidates.
-       (company +childframe)
+       company
        (ivy +prescient)
 
        :ui
        deft
        doom
        modeline
-       maxibuffer
        fill-column
        hl-todo
        indent-guides
@@ -39,11 +38,10 @@
        zen
 
        :editor
-       (evil +everywhere); come to the dark side, we have cookies
+       (evil +everywhere)
        file-templates
        fold
        (format +onsave)
-       ;;god
        lispy
        multiple-cursors
        parinfer
